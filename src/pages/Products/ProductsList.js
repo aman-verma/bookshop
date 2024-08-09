@@ -3,9 +3,11 @@ import { useSearchParams } from 'react-router-dom';
 
 import { ProductCard } from '../../components';
 import { ProductFilterBar } from './components/ProductFilterBar';
+import { useTitle } from '../../hooks/useTitle';
 
 export const ProductsList = () => {
   const [show, setShow] = useState(false);
+  useTitle('Product List');
 
   const [products, setProducts] = useState([]);
 
