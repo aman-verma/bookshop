@@ -1,18 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { ProductCard } from '../../components';
 import { ProductFilterBar } from './components/ProductFilterBar';
 import { useTitle } from '../../hooks/useTitle';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { inititalProductList } from './../../store/filterSlice';
 
 export const ProductsList = () => {
   const [show, setShow] = useState(false);
   useTitle('Product List');
 
-  const [products, setProducts] = useState([]);
-
   const [searchParams] = useSearchParams();
   const searchTerm = searchParams.get('q');
+
+  const dispatch = useDispatch();
+  const { productList } = useSelector((state) => state.filterState);
 
   useEffect(() => {
     async function fetchProducts() {
@@ -24,7 +28,7 @@ export const ProductsList = () => {
         );
         data = filterData;
       }
-      setProducts(data);
+      dispatch(inititalProductList(data));
     }
     fetchProducts();
   }, []);
@@ -33,7 +37,7 @@ export const ProductsList = () => {
       <section className='my-5'>
         <div className='my-5 flex justify-between'>
           <span className='text-2xl font-semibold dark:text-slate-100 mb-5'>
-            All eBooks ({products.length})
+            All eBooks ({productList.length})
           </span>
           <span>
             <button
@@ -56,7 +60,7 @@ export const ProductsList = () => {
           </span>
         </div>
         <div className='flex flex-wrap justify-center lg:flex-row'>
-          {products.map((product) => (
+          {productList.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
