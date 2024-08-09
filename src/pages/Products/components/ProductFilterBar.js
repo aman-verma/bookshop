@@ -5,7 +5,7 @@ export const ProductFilterBar = ({ setShow }) => {
     <section className='filter'>
       <div
         id='drawer-disable-body-scrolling'
-        className={`fixed z-40 h-screen p-5 overflow-y-auto bg-white w-72 dark:bg-gray-800 transition-transhtmlForm left-0 top-0 transhtmlForm-none`}
+        className={`fixed z-40 h-screen p-5 overflow-y-auto bg-white w-72 dark:bg-gray-800 transition-transhtmlForm left-0 top-0 transhtmlForm-none border-r-4 border-indigo-500`}
         tabIndex='-1'
         aria-labelledby='drawer-disable-body-scrolling-label'
         aria-modal='true'

@@ -1,15 +1,27 @@
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
+
 import { ProductCard } from '../../components';
 import { ProductFilterBar } from './components/ProductFilterBar';
 
 export const ProductsList = () => {
   const [show, setShow] = useState(false);
+
   const [products, setProducts] = useState([]);
+
+  const [searchParams] = useSearchParams();
+  const searchTerm = searchParams.get('q');
 
   useEffect(() => {
     async function fetchProducts() {
       const response = await fetch('http://localhost:8000/products');
-      const data = await response.json();
+      let data = await response.json();
+      if (searchTerm) {
+        let filterData = data.filter((product) =>
+          product.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        data = filterData;
+      }
       setProducts(data);
     }
     fetchProducts();
