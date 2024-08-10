@@ -1,5 +1,5 @@
+import { Link } from 'react-router-dom';
 export const DropdownLoggedOut = () => {
-  import { Link } from 'react-router-dom';
   return (
     <div
       id='dropdownAvatar'
@@ -11,7 +11,7 @@ export const DropdownLoggedOut = () => {
       >
         <li>
           <Link
-            to='/'
+            to='/products'
             className='block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
           >
             All eBooks
@@ -19,7 +19,7 @@ export const DropdownLoggedOut = () => {
         </li>
         <li>
           <Link
-            to='/'
+            to='/login'
             className='block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
           >
             Login
@@ -27,7 +27,7 @@ export const DropdownLoggedOut = () => {
         </li>
         <li>
           <Link
-            to='/'
+            to='/register'
             className='block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
           >
             Register
