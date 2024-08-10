@@ -237,10 +237,13 @@
       "best_seller": true
     }
   ],
-  "orders": [
-    
-  ],
+  "orders": [],
   "users": [
-    
+    {
+      "email": "aman@example.com",
+      "password": "$2a$10$uWnnSwSZG7z41LG9Lo9AoOHd8JLz.Z7xJJhWjmxQdLWgTuOfaURbe",
+      "name": "aman",
+      "id": 1
+    }
   ]
 }

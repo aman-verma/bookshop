@@ -58,7 +58,7 @@ export const Header = () => {
               className='bi bi-person-circle cursor-pointer text-2xl text-gray-700 dark:text-white'
             ></span>
             {dropdown && <DropdownLoggedOut />}
-            {dropdown && <DropdownLoggedIn />}
+            {/* {dropdown && <DropdownLoggedIn />} */}
           </div>
         </div>
       </nav>
