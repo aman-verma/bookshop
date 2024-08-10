@@ -6,16 +6,16 @@ import { ProductFilterBar } from './components/ProductFilterBar';
 import { useTitle } from '../../hooks/useTitle';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { inititalProductList } from './../../store/filterSlice';
+import { initialProductList } from './../../store/filterSlice';
 
 export const ProductsList = () => {
+  const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   useTitle('Product List');
 
   const [searchParams] = useSearchParams();
   const searchTerm = searchParams.get('q');
 
-  const dispatch = useDispatch();
   const { productList } = useSelector((state) => state.filterState);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export const ProductsList = () => {
         );
         data = filterData;
       }
-      dispatch(inititalProductList(data));
+      dispatch(initialProductList(data));
     }
     fetchProducts();
   }, []);

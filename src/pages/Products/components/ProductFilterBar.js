@@ -1,11 +1,35 @@
-import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  bestSeller,
+  inStock,
+  sorts,
+  rating,
+} from './../../../store/filterSlice';
 
 export const ProductFilterBar = ({ setShow }) => {
+  const dispatch = useDispatch();
+  const { filters } = useSelector((state) => state.filterState);
+
+  const handleSortChange = (event) => {
+    dispatch(sorts(event.target.value));
+  };
+
+  const handleRatingChange = (event) => {
+    dispatch(rating(event.target.value));
+  };
+
+  const clearFilters = () => {
+    dispatch(bestSeller(false));
+    dispatch(inStock(false));
+    dispatch(sorts(null));
+    dispatch(rating(null));
+  };
+
   return (
     <section className='filter'>
       <div
         id='drawer-disable-body-scrolling'
-        className={`fixed z-40 h-screen p-5 overflow-y-auto bg-white w-72 dark:bg-gray-800 transition-transhtmlForm left-0 top-0 transhtmlForm-none border-r-4 border-indigo-500`}
+        className={`fixed z-40 h-screen p-5 overflow-y-auto bg-white w-72 dark:bg-gray-800 transition-transform left-0 top-0 transform-none border-r-4 border-indigo-500`}
         tabIndex='-1'
         aria-labelledby='drawer-disable-body-scrolling-label'
         aria-modal='true'
@@ -48,9 +72,11 @@ export const ProductFilterBar = ({ setShow }) => {
                 <input
                   id='price-sort-1'
                   type='radio'
-                  value=''
+                  value='lowtohigh'
                   name='price-sort'
                   className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-700 dark:border-gray-600'
+                  onChange={handleSortChange}
+                  checked={filters.sortBy === 'lowtohigh'}
                 />
                 <label
                   htmlFor='price-sort-1'
@@ -63,9 +89,11 @@ export const ProductFilterBar = ({ setShow }) => {
                 <input
                   id='price-sort-2'
                   type='radio'
-                  value=''
+                  value='hoghtolow'
                   name='price-sort'
                   className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-700 dark:border-gray-600'
+                  onChange={handleSortChange}
+                  checked={filters.sortBy === 'hoghtolow'}
                 />
                 <label
                   htmlFor='price-sort-2'
@@ -81,9 +109,11 @@ export const ProductFilterBar = ({ setShow }) => {
                 <input
                   id='rating-sort-1'
                   type='radio'
-                  value=''
+                  value='4STARSABOVE'
                   name='rating-sort'
                   className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-700 dark:border-gray-600'
+                  onChange={handleRatingChange}
+                  checked={filters.ratings === '4STARSABOVE'}
                 />
                 <label
                   htmlFor='rating-sort-1'
@@ -96,9 +126,11 @@ export const ProductFilterBar = ({ setShow }) => {
                 <input
                   id='rating-sort-2'
                   type='radio'
-                  value=''
+                  value='3STARSABOVE'
                   name='rating-sort'
                   className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-700 dark:border-gray-600'
+                  onChange={handleRatingChange}
+                  checked={filters.ratings === '3STARSABOVE'}
                 />
                 <label
                   htmlFor='rating-sort-2'
@@ -111,9 +143,11 @@ export const ProductFilterBar = ({ setShow }) => {
                 <input
                   id='rating-sort-3'
                   type='radio'
-                  value=''
+                  value='2STARSABOVE'
                   name='rating-sort'
                   className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-700 dark:border-gray-600'
+                  onChange={handleRatingChange}
+                  checked={filters.ratings === '2STARSABOVE'}
                 />
                 <label
                   htmlFor='rating-sort-3'
@@ -126,9 +160,11 @@ export const ProductFilterBar = ({ setShow }) => {
                 <input
                   id='rating-sort-4'
                   type='radio'
-                  value=''
+                  value='1STARSABOVE'
                   name='rating-sort'
                   className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-700 dark:border-gray-600'
+                  onChange={handleRatingChange}
+                  checked={filters.ratings === '1STARSABOVE'}
                 />
                 <label
                   htmlFor='rating-sort-4'
@@ -142,10 +178,12 @@ export const ProductFilterBar = ({ setShow }) => {
               <span className='font-semibold'>Other Filters</span>
               <div className='flex items-center my-1'>
                 <input
+                  onClick={() => dispatch(bestSeller(!filters.bestSellerOnly))}
                   id='best-seller'
                   type='checkbox'
                   value=''
                   className='w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 dark:bg-gray-700 dark:border-gray-600'
+                  checked={filters.bestSellerOnly}
                 />
                 <label
                   htmlFor='best-seller'
@@ -156,10 +194,12 @@ export const ProductFilterBar = ({ setShow }) => {
               </div>
               <div className='flex items-center my-1'>
                 <input
+                  onClick={() => dispatch(inStock(!filters.onlyInStock))}
                   id='only-instock'
                   type='checkbox'
                   value=''
                   className='w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 dark:bg-gray-700 dark:border-gray-600'
+                  checked={filters.onlyInStock}
                 />
                 <label
                   htmlFor='only-instock'
@@ -172,6 +212,7 @@ export const ProductFilterBar = ({ setShow }) => {
             <li className='mt-1 mb-5 px-1'>
               <button
                 type='button'
+                onClick={clearFilters}
                 className='text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-10 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700'
               >
                 Clear Filter

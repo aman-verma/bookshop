@@ -3,31 +3,70 @@ import { createSlice } from '@reduxjs/toolkit';
 const filterSlice = createSlice({
   name: 'filter',
   initialState: {
+    initialProductList: [],
     productList: [],
-    onlyInStock: false,
-    bestSellerOnly: false,
-    sortBy: null,
-    ratings: null,
+    filters: {
+      onlyInStock: false,
+      bestSellerOnly: false,
+      sortBy: null,
+      ratings: null,
+    },
   },
   reducers: {
-    inititalProductList(state, action) {
-      return { ...state, productList: action.payload };
+    initialProductList(state, action) {
+      state.initialProductList = action.payload;
+      state.productList = action.payload;
     },
-
-    add(state, action) {
-      const updatedCartList = state.cartList.concat(action.payload);
-      const total = state.total + action.payload.price;
-      return { ...state, cartList: updatedCartList, total: total };
+    inStock(state, action) {
+      state.filters.onlyInStock = action.payload;
+      state.productList = applyFilters(state);
     },
-    remove(state, action) {
-      const updatedCartList = state.cartList.filter(
-        (product) => product.id !== action.payload.id
-      );
-      const total = state.total - action.payload.price;
-      return { ...state, cartList: updatedCartList, total: total };
+    bestSeller(state, action) {
+      state.filters.bestSellerOnly = action.payload;
+      state.productList = applyFilters(state);
+    },
+    sorts(state, action) {
+      state.filters.sortBy = action.payload;
+      state.productList = applyFilters(state);
+    },
+    rating(state, action) {
+      state.filters.ratings = action.payload;
+      state.productList = applyFilters(state);
     },
   },
 });
 
-export const { inititalProductList, add, remove } = filterSlice.actions;
+const applyFilters = (state) => {
+  let filteredList = [...state.initialProductList];
+
+  // Filter by in stock
+  if (state.filters.onlyInStock) {
+    filteredList = filteredList.filter((product) => product.in_stock);
+  }
+
+  // Filter by best seller
+  if (state.filters.bestSellerOnly) {
+    filteredList = filteredList.filter((product) => product.best_seller);
+  }
+
+  // Filter by ratings
+  if (state.filters.ratings) {
+    const ratingThreshold = Number(state.filters.ratings[0]); // '4STARSABOVE' -> 4
+    filteredList = filteredList.filter(
+      (product) => product.rating >= ratingThreshold
+    );
+  }
+
+  // Sort by price
+  if (state.filters.sortBy === 'lowtohigh') {
+    filteredList.sort((a, b) => Number(a.price) - Number(b.price));
+  } else if (state.filters.sortBy === 'hoghtolow') {
+    filteredList.sort((a, b) => Number(b.price) - Number(a.price));
+  }
+
+  return filteredList;
+};
+
+export const { initialProductList, inStock, bestSeller, sorts, rating } =
+  filterSlice.actions;
 export const filterReducer = filterSlice.reducer;
