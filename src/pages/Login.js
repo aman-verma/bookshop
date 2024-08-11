@@ -1,4 +1,30 @@
+import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 export const Login = () => {
+  const navigate = useNavigate();
+  const email = useRef();
+  const password = useRef();
+
+  async function handleLogin(e) {
+    e.preventDefault();
+    const loginDetail = {
+      email: email.current.value,
+      password: password.current.value,
+    };
+
+    const response = await fetch('http://localhost:8000/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(loginDetail),
+    });
+
+    const data = await response.json();
+    console.log(data);
+    data.accessToken ? navigate('/products') : toast.error(data);
+  }
+
   return (
     <main>
       <section>
@@ -6,7 +32,7 @@ export const Login = () => {
           Login
         </p>
       </section>
-      <form>
+      <form onSubmit={handleLogin}>
         <div className='mb-6'>
           <label
             htmlFor='email'
@@ -15,6 +41,7 @@ export const Login = () => {
             Your email
           </label>
           <input
+            ref={email}
             type='email'
             id='email'
             className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
@@ -31,6 +58,7 @@ export const Login = () => {
             Your password
           </label>
           <input
+            ref={password}
             type='password'
             id='password'
             className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
