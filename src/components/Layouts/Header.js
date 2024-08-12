@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import logo from './../../assets/images/logo.png';
 import { Search } from './../Sections/Search';
@@ -10,6 +11,7 @@ export const Header = () => {
   );
   const [showSearch, setShowSearch] = useState(JSON.parse(false));
   const [dropdown, setDropdown] = useState(false);
+  const { cartList, total } = useSelector((state) => state.cartState);
   const token = JSON.parse(sessionStorage.getItem('token'));
 
   useEffect(() => {
@@ -49,7 +51,7 @@ export const Header = () => {
             <Link to='/cart' className='text-gray-700 dark:text-white mr-5'>
               <span className='text-2xl bi bi-cart-fill relative'>
                 <span className='text-white text-sm absolute -top-1 left-2.5 bg-rose-500 px-1 rounded-full '>
-                  0
+                  {cartList.length}
                 </span>
               </span>
             </Link>
